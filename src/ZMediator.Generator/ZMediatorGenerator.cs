@@ -310,7 +310,6 @@ namespace ZMediator.Generator
                 for (int i = applicablePipelines.Count - 1; i >= 0; i--)
                 {
                     var pipeline = applicablePipelines[i];
-                    var paramSuffix = i == 0 ? "" : i.ToString();
                     var argR = i == 0 ? "request" : string.Format("r{0}", i);
                     var argC = i == 0 ? "ct" : string.Format("c{0}", i);
 
