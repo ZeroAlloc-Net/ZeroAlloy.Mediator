@@ -54,6 +54,9 @@ namespace ZMediator.Generator
                 var streamInfos = data.Left.Right;
                 var pipelineInfos = data.Right;
 
+                // Report diagnostics
+                ReportDiagnostics(spc, requestInfos);
+
                 var source = GenerateMediatorClass(requestInfos, notificationInfos, streamInfos, pipelineInfos);
                 spc.AddSource("ZMediator.Mediator.g.cs", source);
             });
@@ -91,7 +94,8 @@ namespace ZMediator.Generator
                     var requestType = iface.TypeArguments[0].ToDisplayString(FullyQualifiedFormat);
                     var responseType = iface.TypeArguments[1].ToDisplayString(FullyQualifiedFormat);
                     var handlerType = symbol.ToDisplayString(FullyQualifiedFormat);
-                    return new RequestHandlerInfo(requestType, responseType, handlerType);
+                    var isValueType = iface.TypeArguments[0].IsValueType;
+                    return new RequestHandlerInfo(requestType, responseType, handlerType, isValueType);
                 }
             }
 
@@ -196,6 +200,41 @@ namespace ZMediator.Generator
             }
 
             return new PipelineBehaviorInfo(behaviorType, order, appliesTo);
+        }
+
+        private static void ReportDiagnostics(
+            Microsoft.CodeAnalysis.SourceProductionContext spc,
+            ImmutableArray<RequestHandlerInfo?> requestHandlers)
+        {
+            var validHandlers = requestHandlers.Where(x => x != null).Select(x => x!).ToList();
+
+            // ZM002: Duplicate handlers for the same request type
+            var grouped = validHandlers.GroupBy(h => h.RequestTypeName).ToList();
+            foreach (var group in grouped)
+            {
+                if (group.Count() > 1)
+                {
+                    var handlerNames = string.Join(", ", group.Select(h => h.HandlerTypeName));
+                    spc.ReportDiagnostic(Diagnostic.Create(
+                        DiagnosticDescriptors.DuplicateHandler,
+                        Location.None,
+                        group.Key,
+                        handlerNames));
+                }
+            }
+
+            // ZM003: Request type is a class (not a value type)
+            var seenRequestTypes = new HashSet<string>();
+            foreach (var handler in validHandlers)
+            {
+                if (!handler.IsRequestValueType && seenRequestTypes.Add(handler.RequestTypeName))
+                {
+                    spc.ReportDiagnostic(Diagnostic.Create(
+                        DiagnosticDescriptors.ClassRequest,
+                        Location.None,
+                        handler.RequestTypeName));
+                }
+            }
         }
 
         private static string GenerateMediatorClass(
