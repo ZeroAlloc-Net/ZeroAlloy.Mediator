@@ -14,6 +14,7 @@
 
 **Files:**
 - Create: `ZMediator.sln`
+- Create: `Directory.Build.props`
 - Create: `src/ZMediator/ZMediator.csproj`
 - Create: `src/ZMediator.Generator/ZMediator.Generator.csproj`
 - Create: `tests/ZMediator.Tests/ZMediator.Tests.csproj`
@@ -42,16 +43,55 @@ dotnet sln add tests/ZMediator.Benchmarks/ZMediator.Benchmarks.csproj
 dotnet sln add samples/ZMediator.Sample/ZMediator.Sample.csproj
 ```
 
-**Step 3: Configure ZMediator.csproj**
+**Step 3: Create Directory.Build.props (shared analyzers)**
+
+Create `Directory.Build.props` in the repository root to share analyzer packages across all net10.0 projects:
+
+```xml
+<Project>
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
+    <PackageReference Include="Meziantou.Analyzer" Version="3.0.19">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Roslynator.Analyzers" Version="4.15.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="ErrorProne.NET.CoreAnalyzers" Version="0.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="ErrorProne.NET.Structs" Version="0.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="NetFabric.Hyperlinq.Analyzer" Version="2.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="ZeroAlloc.Analyzers" Version="1.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>
+```
+
+The `Condition="'$(TargetFramework)' != 'netstandard2.0'"` ensures these analyzers are NOT applied to the source generator project (which must target netstandard2.0).
+
+**Step 4: Configure ZMediator.csproj**
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>ZMediator</RootNamespace>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 </Project>
 ```
@@ -86,9 +126,6 @@ Tests reference both the core lib (for interfaces) and the generator (as analyze
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>ZMediator.Tests</RootNamespace>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
@@ -115,9 +152,6 @@ Tests reference both the core lib (for interfaces) and the generator (as analyze
     <TargetFramework>net10.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>ZMediator.Benchmarks</RootNamespace>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.*" />
@@ -139,9 +173,6 @@ Tests reference both the core lib (for interfaces) and the generator (as analyze
     <TargetFramework>net10.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>ZMediator.Sample</RootNamespace>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\ZMediator\ZMediator.csproj" />
