@@ -265,21 +265,21 @@ namespace ZMediator.Generator
             foreach (var handler in validRequests)
             {
                 var fieldName = GetFactoryFieldName(handler.HandlerTypeName);
-                sb.AppendLine(string.Format("        private static Func<{0}>? {1};", handler.HandlerTypeName, fieldName));
+                sb.AppendLine(string.Format("        internal static Func<{0}>? {1};", handler.HandlerTypeName, fieldName));
             }
 
             // Emit factory fields for notification handlers
             foreach (var handler in validNotifications)
             {
                 var fieldName = GetFactoryFieldName(handler.HandlerTypeName);
-                sb.AppendLine(string.Format("        private static Func<{0}>? {1};", handler.HandlerTypeName, fieldName));
+                sb.AppendLine(string.Format("        internal static Func<{0}>? {1};", handler.HandlerTypeName, fieldName));
             }
 
             // Emit factory fields for stream handlers
             foreach (var handler in validStreams)
             {
                 var fieldName = GetFactoryFieldName(handler.HandlerTypeName);
-                sb.AppendLine(string.Format("        private static Func<{0}>? {1};", handler.HandlerTypeName, fieldName));
+                sb.AppendLine(string.Format("        internal static Func<{0}>? {1};", handler.HandlerTypeName, fieldName));
             }
 
             sb.AppendLine();
