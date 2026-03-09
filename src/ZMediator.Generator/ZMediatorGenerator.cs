@@ -510,28 +510,33 @@ namespace ZMediator.Generator
             sb.AppendLine("    }");
         }
 
+        private static string GetSimpleTypeName(string fullyQualifiedName)
+        {
+            var name = fullyQualifiedName;
+            if (name.StartsWith("global::"))
+            {
+                name = name.Substring("global::".Length);
+            }
+
+            var lastDot = name.LastIndexOf('.');
+            if (lastDot >= 0)
+            {
+                name = name.Substring(lastDot + 1);
+            }
+
+            return name;
+        }
+
         private static string GetFactoryFieldName(string handlerTypeName)
         {
             // Convert "global::TestApp.PingHandler" to "_pingHandlerFactory"
-            var simpleName = handlerTypeName;
-            var lastDot = simpleName.LastIndexOf('.');
-            if (lastDot >= 0)
-            {
-                simpleName = simpleName.Substring(lastDot + 1);
-            }
-
+            var simpleName = GetSimpleTypeName(handlerTypeName);
             return "_" + char.ToLowerInvariant(simpleName[0]) + simpleName.Substring(1) + "Factory";
         }
 
         private static string SanitizeFieldName(string handlerTypeName)
         {
-            var simpleName = handlerTypeName;
-            var lastDot = simpleName.LastIndexOf('.');
-            if (lastDot >= 0)
-            {
-                simpleName = simpleName.Substring(lastDot + 1);
-            }
-
+            var simpleName = GetSimpleTypeName(handlerTypeName);
             return char.ToLowerInvariant(simpleName[0]) + simpleName.Substring(1);
         }
     }
