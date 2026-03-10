@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.2](https://github.com/MarcelRoozekrans/ZMediator/compare/v0.1.1...v0.1.2) (2026-03-10)
+
+
+### Bug Fixes
+
+* add explicit PackageId to packable projects ([71c40df](https://github.com/MarcelRoozekrans/ZMediator/commit/71c40dff6741d07214abd52d032ea0a2de3b9c70))
+* add explicit PackageId to packable projects ([94a587d](https://github.com/MarcelRoozekrans/ZMediator/commit/94a587df56ba3b3cb863500837cf38a23d080186))
+* add package icon for NuGet listings ([361ccdd](https://github.com/MarcelRoozekrans/ZMediator/commit/361ccdd1bb255e539e0314e63537f5594c3b5b29))
+* update NuGet package metadata for all packable projects ([da33e91](https://github.com/MarcelRoozekrans/ZMediator/commit/da33e91b1955eb1b841679eb89f17e7aa1ee8a29))
+
 ## [0.1.1](https://github.com/MarcelRoozekrans/ZMediator/compare/v0.1.0...v0.1.1) (2026-03-09)
 
 
