@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis;
 using System.Collections.Immutable;
 
-namespace ZeroAlloc.Mediator.Tests.GeneratorTests;
+namespace ZeroAlloc.MediatorTests.GeneratorTests;
 
 public class NotificationDispatchGeneratorTests
 {

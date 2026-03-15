@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis;
 
-namespace ZeroAlloc.Mediator.Tests.GeneratorTests;
+namespace ZeroAlloc.MediatorTests.GeneratorTests;
 
 public class DiInterfaceGeneratorTests
 {

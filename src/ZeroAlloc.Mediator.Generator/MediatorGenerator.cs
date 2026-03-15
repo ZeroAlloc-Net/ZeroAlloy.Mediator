@@ -381,7 +381,7 @@ namespace ZeroAlloc.Mediator.Generator
             sb.AppendLine("using System.Threading;");
             sb.AppendLine("using System.Threading.Tasks;");
             sb.AppendLine();
-            sb.AppendLine("namespace ZeroAlloc.Mediator");
+            sb.AppendLine("namespace ZeroAlloc");
             sb.AppendLine("{");
             sb.AppendLine("    public static partial class Mediator");
             sb.AppendLine("    {");

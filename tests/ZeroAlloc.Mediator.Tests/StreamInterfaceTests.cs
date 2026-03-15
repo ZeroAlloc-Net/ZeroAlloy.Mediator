@@ -1,4 +1,4 @@
-namespace ZeroAlloc.Mediator.Tests;
+namespace ZeroAlloc.MediatorTests;
 
 public class StreamInterfaceTests
 {
