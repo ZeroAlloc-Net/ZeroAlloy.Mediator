@@ -1,4 +1,4 @@
-namespace ZeroAlloc;
+namespace ZeroAlloc.Mediator;
 
 [AttributeUsage(AttributeTargets.Class)]
 public sealed class PipelineBehaviorAttribute(int order = 0) : Attribute

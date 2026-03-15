@@ -1,4 +1,4 @@
-namespace ZeroAlloc.MediatorTests;
+namespace ZeroAlloc.Mediator.Tests;
 
 public class NotificationInterfaceTests
 {

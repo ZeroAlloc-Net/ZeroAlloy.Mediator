@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ZeroAlloc.MediatorTests.IntegrationTests;
+namespace ZeroAlloc.Mediator.Tests.IntegrationTests;
 
 // Handler must be public, top-level in the namespace
 public readonly record struct IntegrationPing(string Message) : IRequest<string>;

@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ZeroAlloc.MediatorTests.IntegrationTests;
+namespace ZeroAlloc.Mediator.Tests.IntegrationTests;
 
 public readonly record struct IntegrationUserCreated(int Id, string Name) : INotification;
 

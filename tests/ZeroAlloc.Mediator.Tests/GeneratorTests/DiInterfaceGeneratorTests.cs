@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis;
 
-namespace ZeroAlloc.MediatorTests.GeneratorTests;
+namespace ZeroAlloc.Mediator.Tests.GeneratorTests;
 
 public class DiInterfaceGeneratorTests
 {
@@ -8,7 +8,7 @@ public class DiInterfaceGeneratorTests
     public void Generator_EmitsIMediatorInterface_WithSendMethod()
     {
         var source = """
-            using ZeroAlloc;
+            using ZeroAlloc.Mediator;
             using System.Threading;
             using System.Threading.Tasks;
 
@@ -34,7 +34,7 @@ public class DiInterfaceGeneratorTests
     public void Generator_EmitsIMediatorInterface_WithPublishMethod()
     {
         var source = """
-            using ZeroAlloc;
+            using ZeroAlloc.Mediator;
             using System.Threading;
             using System.Threading.Tasks;
 
@@ -60,7 +60,7 @@ public class DiInterfaceGeneratorTests
     public void Generator_EmitsIMediatorInterface_WithCreateStreamMethod()
     {
         var source = """
-            using ZeroAlloc;
+            using ZeroAlloc.Mediator;
             using System.Collections.Generic;
             using System.Runtime.CompilerServices;
             using System.Threading;
@@ -92,7 +92,7 @@ public class DiInterfaceGeneratorTests
     public void Generator_EmitsMediatorService_DelegatesToStaticMediator()
     {
         var source = """
-            using ZeroAlloc;
+            using ZeroAlloc.Mediator;
             using System.Threading;
             using System.Threading.Tasks;
 
@@ -118,7 +118,7 @@ public class DiInterfaceGeneratorTests
     public void Generator_IMediator_ExcludesBaseNotificationHandlerPublish()
     {
         var source = """
-            using ZeroAlloc;
+            using ZeroAlloc.Mediator;
             using System.Threading;
             using System.Threading.Tasks;
 
@@ -147,14 +147,14 @@ public class DiInterfaceGeneratorTests
         Assert.Contains("ValueTask Publish(global::TestApp.UserCreated notification", output);
 
         // But NOT for INotification (base handler type)
-        Assert.DoesNotContain("Publish(global::ZeroAlloc.INotification notification", output);
+        Assert.DoesNotContain("Publish(global::ZeroAlloc.Mediator.INotification notification", output);
     }
 
     [Fact]
     public void Generator_IMediator_HasAllMethodTypes()
     {
         var source = """
-            using ZeroAlloc;
+            using ZeroAlloc.Mediator;
             using System.Collections.Generic;
             using System.Runtime.CompilerServices;
             using System.Threading;

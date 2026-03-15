@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis;
 using System.Collections.Immutable;
 
-namespace ZeroAlloc.MediatorTests.GeneratorTests;
+namespace ZeroAlloc.Mediator.Tests.GeneratorTests;
 
 public class DiagnosticTests
 {
@@ -9,7 +9,7 @@ public class DiagnosticTests
     public void ZAM002_DuplicateHandler_EmitsError()
     {
         var source = """
-            using ZeroAlloc;
+            using ZeroAlloc.Mediator;
             using System.Threading;
             using System.Threading.Tasks;
 
@@ -41,7 +41,7 @@ public class DiagnosticTests
     public void ZAM001_NoHandler_EmitsError()
     {
         var source = """
-            using ZeroAlloc;
+            using ZeroAlloc.Mediator;
 
             namespace TestApp;
 
@@ -59,7 +59,7 @@ public class DiagnosticTests
     public void ZAM001_NotEmitted_WhenHandlerExists()
     {
         var source = """
-            using ZeroAlloc;
+            using ZeroAlloc.Mediator;
             using System.Threading;
             using System.Threading.Tasks;
 
@@ -84,7 +84,7 @@ public class DiagnosticTests
     public void ZAM003_ClassRequest_EmitsWarning()
     {
         var source = """
-            using ZeroAlloc;
+            using ZeroAlloc.Mediator;
             using System.Threading;
             using System.Threading.Tasks;
 
@@ -110,7 +110,7 @@ public class DiagnosticTests
     public void ZAM005_MissingHandleMethod_EmitsError()
     {
         var source = """
-            using ZeroAlloc;
+            using ZeroAlloc.Mediator;
             using System.Threading;
             using System.Threading.Tasks;
 
@@ -142,7 +142,7 @@ public class DiagnosticTests
     public void ZAM006_DuplicateOrder_EmitsWarning()
     {
         var source = """
-            using ZeroAlloc;
+            using ZeroAlloc.Mediator;
             using System;
             using System.Threading;
             using System.Threading.Tasks;
@@ -189,7 +189,7 @@ public class DiagnosticTests
     public void ZAM003_NotEmitted_ForStructRequest()
     {
         var source = """
-            using ZeroAlloc;
+            using ZeroAlloc.Mediator;
             using System.Threading;
             using System.Threading.Tasks;
 
@@ -214,7 +214,7 @@ public class DiagnosticTests
     public void ZAM005_NotEmitted_WhenValidHandleMethodExists()
     {
         var source = """
-            using ZeroAlloc;
+            using ZeroAlloc.Mediator;
             using System;
             using System.Threading;
             using System.Threading.Tasks;
@@ -250,7 +250,7 @@ public class DiagnosticTests
     public void ZAM002_IncludesHandlerNames_InMessage()
     {
         var source = """
-            using ZeroAlloc;
+            using ZeroAlloc.Mediator;
             using System.Threading;
             using System.Threading.Tasks;
 
@@ -284,7 +284,7 @@ public class DiagnosticTests
     public void NoDiagnostics_WhenEverythingIsValid()
     {
         var source = """
-            using ZeroAlloc;
+            using ZeroAlloc.Mediator;
             using System;
             using System.Threading;
             using System.Threading.Tasks;
@@ -321,7 +321,7 @@ public class DiagnosticTests
     public void Generator_EmitsNoCode_WhenNoHandlers()
     {
         var source = """
-            using ZeroAlloc;
+            using ZeroAlloc.Mediator;
 
             namespace TestApp;
 

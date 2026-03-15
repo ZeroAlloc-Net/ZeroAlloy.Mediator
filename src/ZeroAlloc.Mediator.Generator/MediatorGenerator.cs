@@ -96,7 +96,7 @@ namespace ZeroAlloc.Mediator.Generator
 
             foreach (var iface in symbol.AllInterfaces)
             {
-                if (iface.OriginalDefinition.ToDisplayString() == "ZeroAlloc.IRequestHandler<TRequest, TResponse>"
+                if (iface.OriginalDefinition.ToDisplayString() == "ZeroAlloc.Mediator.IRequestHandler<TRequest, TResponse>"
                     && iface.TypeArguments.Length == 2)
                 {
                     var requestType = iface.TypeArguments[0].ToDisplayString(FullyQualifiedFormat);
@@ -120,7 +120,7 @@ namespace ZeroAlloc.Mediator.Generator
 
             foreach (var iface in symbol.AllInterfaces)
             {
-                if (iface.OriginalDefinition.ToDisplayString() == "ZeroAlloc.INotificationHandler<TNotification>"
+                if (iface.OriginalDefinition.ToDisplayString() == "ZeroAlloc.Mediator.INotificationHandler<TNotification>"
                     && iface.TypeArguments.Length == 1)
                 {
                     var notificationSymbol = iface.TypeArguments[0];
@@ -129,7 +129,7 @@ namespace ZeroAlloc.Mediator.Generator
 
                     // Check if notification type has [ParallelNotification]
                     var isParallel = notificationSymbol.GetAttributes().Any(a =>
-                        a.AttributeClass?.ToDisplayString() == "ZeroAlloc.ParallelNotificationAttribute");
+                        a.AttributeClass?.ToDisplayString() == "ZeroAlloc.Mediator.ParallelNotificationAttribute");
 
                     // Detect base handler: TNotification is an interface or abstract class
                     var isBaseHandler = notificationSymbol.TypeKind == TypeKind.Interface
@@ -165,11 +165,11 @@ namespace ZeroAlloc.Mediator.Generator
             if (symbol.TypeKind != TypeKind.Interface) return false;
 
             // Check if this interface is or derives from INotification
-            if (symbol.ToDisplayString() == "ZeroAlloc.INotification") return true;
+            if (symbol.ToDisplayString() == "ZeroAlloc.Mediator.INotification") return true;
 
             foreach (var iface in symbol.AllInterfaces)
             {
-                if (iface.ToDisplayString() == "ZeroAlloc.INotification") return true;
+                if (iface.ToDisplayString() == "ZeroAlloc.Mediator.INotification") return true;
             }
 
             return false;
@@ -185,7 +185,7 @@ namespace ZeroAlloc.Mediator.Generator
 
             foreach (var iface in symbol.AllInterfaces)
             {
-                if (iface.OriginalDefinition.ToDisplayString() == "ZeroAlloc.IStreamRequestHandler<TRequest, TResponse>"
+                if (iface.OriginalDefinition.ToDisplayString() == "ZeroAlloc.Mediator.IStreamRequestHandler<TRequest, TResponse>"
                     && iface.TypeArguments.Length == 2)
                 {
                     var requestType = iface.TypeArguments[0].ToDisplayString(FullyQualifiedFormat);
@@ -207,13 +207,13 @@ namespace ZeroAlloc.Mediator.Generator
 
             // Check for [PipelineBehavior] attribute
             var pipelineAttr = symbol.GetAttributes().FirstOrDefault(a =>
-                a.AttributeClass?.ToDisplayString() == "ZeroAlloc.PipelineBehaviorAttribute");
+                a.AttributeClass?.ToDisplayString() == "ZeroAlloc.Mediator.PipelineBehaviorAttribute");
 
             if (pipelineAttr == null) return null;
 
             // Check implements IPipelineBehavior
             var implementsInterface = symbol.AllInterfaces.Any(i =>
-                i.ToDisplayString() == "ZeroAlloc.IPipelineBehavior");
+                i.ToDisplayString() == "ZeroAlloc.Mediator.IPipelineBehavior");
 
             if (!implementsInterface) return null;
 
@@ -277,7 +277,7 @@ namespace ZeroAlloc.Mediator.Generator
 
             foreach (var iface in symbol.AllInterfaces)
             {
-                if (iface.OriginalDefinition.ToDisplayString() == "ZeroAlloc.IRequest<TResponse>"
+                if (iface.OriginalDefinition.ToDisplayString() == "ZeroAlloc.Mediator.IRequest<TResponse>"
                     && iface.TypeArguments.Length == 1)
                 {
                     var requestType = symbol.ToDisplayString(FullyQualifiedFormat);
@@ -381,7 +381,7 @@ namespace ZeroAlloc.Mediator.Generator
             sb.AppendLine("using System.Threading;");
             sb.AppendLine("using System.Threading.Tasks;");
             sb.AppendLine();
-            sb.AppendLine("namespace ZeroAlloc");
+            sb.AppendLine("namespace ZeroAlloc.Mediator");
             sb.AppendLine("{");
             sb.AppendLine("    public static partial class Mediator");
             sb.AppendLine("    {");

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <RootNamespace>ZeroAlloc.MediatorTests</RootNamespace>
+    <RootNamespace>ZeroAlloc.Mediator.Tests</RootNamespace>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
@@ -19,7 +19,6 @@
     <ProjectReference Include="..\..\src\ZeroAlloc.Mediator\ZeroAlloc.Mediator.csproj" />
     <ProjectReference Include="..\..\src\ZeroAlloc.Mediator.Generator\ZeroAlloc.Mediator.Generator.csproj"
                       OutputItemType="Analyzer"
-                      ReferenceOutputAssembly="true"
-                      Aliases="MediatorGenAlias" />
+                      ReferenceOutputAssembly="true" />
   </ItemGroup>
 </Project>
