@@ -1,7 +1,7 @@
 #nullable enable
 using System;
 
-namespace ZMediator.Generator
+namespace ZeroAlloc.Mediator.Generator
 {
     internal sealed class StreamHandlerInfo : IEquatable<StreamHandlerInfo>
     {
