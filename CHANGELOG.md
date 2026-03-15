@@ -1,5 +1,43 @@
 # Changelog
 
+## [0.1.4](https://github.com/MarcelRoozekrans/ZMediator/compare/v0.1.3...v0.1.4) (2026-03-15)
+
+
+### Features
+
+* rebrand to ZeroAlloc.Mediator ([8dad6e8](https://github.com/MarcelRoozekrans/ZMediator/commit/8dad6e8339fc55880b79799decea987b0de739dc))
+* ZeroAlloc.Mediator rebrand, .NET 8 support, and Native AOT ([64b4935](https://github.com/MarcelRoozekrans/ZMediator/commit/64b49353177ef6ea36ca14e936d29e1652e40e0b))
+
+
+### Bug Fixes
+
+* revert generated namespace to ZeroAlloc, move test namespace to ZeroAlloc.MediatorTests ([059a3c4](https://github.com/MarcelRoozekrans/ZMediator/commit/059a3c4ca0f058018b76618294b4f88590677336))
+
+
+### Refactoring
+
+* move all types to namespace ZeroAlloc.Mediator ([f8f7f37](https://github.com/MarcelRoozekrans/ZMediator/commit/f8f7f37c39e69e3e0b979d7c3e12f705a3725b29))
+* remove old ZMediator paths from git tracking ([f43ca96](https://github.com/MarcelRoozekrans/ZMediator/commit/f43ca96c2efd25352eb4cec9b87fb4d4609a4fa3))
+* rename all project folders and files to ZeroAlloc.Mediator ([deffc18](https://github.com/MarcelRoozekrans/ZMediator/commit/deffc18dcdc9f425b21ac6b0a7cc44ad1586ef74))
+* rename core library namespace ZMediator -&gt; ZeroAlloc ([610ddc8](https://github.com/MarcelRoozekrans/ZMediator/commit/610ddc8deebd51fade0d84559849a4c000689a60))
+* rename diagnostic IDs ZM00x -&gt; ZAM00x and update category to ZeroAlloc.Mediator ([ff6a02c](https://github.com/MarcelRoozekrans/ZMediator/commit/ff6a02c040eb9853609b8a14d23ada8087d913ea))
+* rename generator info record namespaces ([a6f8e69](https://github.com/MarcelRoozekrans/ZMediator/commit/a6f8e693d90a94d15d4649de713d0c7e45c4fe94))
+* rename MediatorGenerator class and update ZMediator string literals ([476450b](https://github.com/MarcelRoozekrans/ZMediator/commit/476450b0ccf56e2d500aecf5beaf45942b6e24f4))
+* update all csproj PackageId, RootNamespace, and ProjectReference paths ([652137e](https://github.com/MarcelRoozekrans/ZMediator/commit/652137e0e379f7ae07ab353c29b5ba69facea413))
+* update sample and benchmark namespaces and using directives ([ba893e6](https://github.com/MarcelRoozekrans/ZMediator/commit/ba893e6d535b48e8133ca4847d001ebdba78ad63))
+* update solution file for ZeroAlloc.Mediator ([75bd489](https://github.com/MarcelRoozekrans/ZMediator/commit/75bd4894376e6f0db570879c619afc89cfcc03e3))
+* update stale ZM00x comment labels to ZAM00x in ReportDiagnostics ([52e7e42](https://github.com/MarcelRoozekrans/ZMediator/commit/52e7e423657e317d83514ab22edf4b226a0fc568))
+* update test namespaces, diagnostic IDs, and generated type name assertions ([caf85bc](https://github.com/MarcelRoozekrans/ZMediator/commit/caf85bc4e17a7c145dc346f9bc133ef1b0a57545))
+
+
+### Documentation
+
+* add rebrand design doc for ZeroAlloc.Mediator ([8de34ae](https://github.com/MarcelRoozekrans/ZMediator/commit/8de34aef45ddaba1ada4945ec77d5bcb8e0df58b))
+* add ZeroAlloc.Mediator rebrand implementation plan ([03aa46f](https://github.com/MarcelRoozekrans/ZMediator/commit/03aa46fa1b1b58069a4f89e69e871a9cf51529f3))
+* document Native AOT compatibility in README and csproj ([85a850f](https://github.com/MarcelRoozekrans/ZMediator/commit/85a850f4f5a8584ce9bf76f86184574b000d8742))
+* update GitHub issue templates and PR template for ZeroAlloc.Mediator rebrand ([2fe9f94](https://github.com/MarcelRoozekrans/ZMediator/commit/2fe9f941d9a989ceac87c4e98cf96a9d80379760))
+* update README for ZeroAlloc.Mediator rebrand ([44ffa26](https://github.com/MarcelRoozekrans/ZMediator/commit/44ffa263928225701f1d9954c30a9748787bf905))
+
 ## [0.1.3](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/compare/v0.1.2...v0.1.3) (2026-03-10)
 
 
