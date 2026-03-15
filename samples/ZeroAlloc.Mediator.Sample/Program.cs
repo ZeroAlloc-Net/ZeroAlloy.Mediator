@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using ZMediator;
+using ZeroAlloc.Mediator;
 using System.Runtime.CompilerServices;
 
 // ============================================================
@@ -15,7 +15,7 @@ Mediator.Configure(cfg =>
 // Request/Response
 // ============================================================
 Console.WriteLine("=== Request/Response ===");
-var pong = await Mediator.Send(new Ping("Hello ZMediator!"), CancellationToken.None);
+var pong = await Mediator.Send(new Ping("Hello ZeroAlloc.Mediator!"), CancellationToken.None);
 Console.WriteLine(pong);
 
 // ============================================================
@@ -59,14 +59,14 @@ var result = await Mediator.Send(new CreateUser("Charlie"), CancellationToken.No
 Console.WriteLine($"Created user ID: {result}");
 
 // ============================================================
-// Dependency Injection (IZMediator interface)
+// Dependency Injection (IMediator interface)
 // ============================================================
 Console.WriteLine("\n=== Dependency Injection ===");
 var services = new ServiceCollection();
-services.AddSingleton<IZMediator, ZMediatorService>();
+services.AddSingleton<IMediator, MediatorService>();
 var provider = services.BuildServiceProvider();
 
-var mediator = provider.GetRequiredService<IZMediator>();
+var mediator = provider.GetRequiredService<IMediator>();
 var diPong = await mediator.Send(new Ping("via DI"), CancellationToken.None);
 Console.WriteLine(diPong);
 

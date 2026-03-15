@@ -18,7 +18,7 @@ public class MediatorBenchmarks
 {
     private readonly CancellationToken _ct = CancellationToken.None;
     private IMediator _mediatR = null!;
-    private ZMediator.IZMediator _zMediatorDi = null!;
+    private ZeroAlloc.Mediator.IMediator _zMediatorDi = null!;
 
     [GlobalSetup]
     public void Setup()
@@ -27,17 +27,17 @@ public class MediatorBenchmarks
         services.AddLogging();
         services.AddMediatR(static cfg =>
             cfg.RegisterServicesFromAssembly(typeof(MediatorBenchmarks).Assembly));
-        services.AddSingleton<ZMediator.IZMediator, ZMediator.ZMediatorService>();
+        services.AddSingleton<ZeroAlloc.Mediator.IMediator, ZeroAlloc.Mediator.MediatorService>();
         var provider = services.BuildServiceProvider();
         _mediatR = provider.GetRequiredService<IMediator>();
-        _zMediatorDi = provider.GetRequiredService<ZMediator.IZMediator>();
+        _zMediatorDi = provider.GetRequiredService<ZeroAlloc.Mediator.IMediator>();
     }
 
     // === Request/Response ===
 
     [BenchmarkCategory("Send"), Benchmark(Baseline = true)]
-    public ValueTask<string> ZMediator_Send()
-        => ZMediator.Mediator.Send(new ZBenchPing("test"), _ct);
+    public ValueTask<string> ZeroAllocMediator_Send()
+        => ZeroAlloc.Mediator.Mediator.Send(new ZBenchPing("test"), _ct);
 
     [BenchmarkCategory("Send"), Benchmark]
     public Task<string> MediatR_Send()
@@ -46,8 +46,8 @@ public class MediatorBenchmarks
     // === Send with Pipeline ===
 
     [BenchmarkCategory("SendPipeline"), Benchmark(Baseline = true)]
-    public ValueTask<int> ZMediator_SendPipeline()
-        => ZMediator.Mediator.Send(new ZBenchCreateUser("test"), _ct);
+    public ValueTask<int> ZeroAllocMediator_SendPipeline()
+        => ZeroAlloc.Mediator.Mediator.Send(new ZBenchCreateUser("test"), _ct);
 
     [BenchmarkCategory("SendPipeline"), Benchmark]
     public Task<int> MediatR_SendPipeline()
@@ -56,8 +56,8 @@ public class MediatorBenchmarks
     // === Notification (single handler) ===
 
     [BenchmarkCategory("Publish1"), Benchmark(Baseline = true)]
-    public ValueTask ZMediator_Publish_Single()
-        => ZMediator.Mediator.Publish(new ZBenchEvent("test"), _ct);
+    public ValueTask ZeroAllocMediator_Publish_Single()
+        => ZeroAlloc.Mediator.Mediator.Publish(new ZBenchEvent("test"), _ct);
 
     [BenchmarkCategory("Publish1"), Benchmark]
     public Task MediatR_Publish_Single()
@@ -66,8 +66,8 @@ public class MediatorBenchmarks
     // === Notification (multiple handlers) ===
 
     [BenchmarkCategory("Publish2"), Benchmark(Baseline = true)]
-    public ValueTask ZMediator_Publish_Multi()
-        => ZMediator.Mediator.Publish(new ZBenchMultiEvent(42), _ct);
+    public ValueTask ZeroAllocMediator_Publish_Multi()
+        => ZeroAlloc.Mediator.Mediator.Publish(new ZBenchMultiEvent(42), _ct);
 
     [BenchmarkCategory("Publish2"), Benchmark]
     public Task MediatR_Publish_Multi()
@@ -76,9 +76,9 @@ public class MediatorBenchmarks
     // === Streaming ===
 
     [BenchmarkCategory("Stream"), Benchmark(Baseline = true)]
-    public async Task ZMediator_Stream()
+    public async Task ZeroAllocMediator_Stream()
     {
-        await foreach (var _ in ZMediator.Mediator.CreateStream(new ZBenchStreamRequest(5), _ct))
+        await foreach (var _ in ZeroAlloc.Mediator.Mediator.CreateStream(new ZBenchStreamRequest(5), _ct))
         {
         }
     }
@@ -91,14 +91,14 @@ public class MediatorBenchmarks
         }
     }
 
-    // === DI Interface (IZMediator) ===
+    // === DI Interface (IMediator) ===
 
     [BenchmarkCategory("SendDI"), Benchmark(Baseline = true)]
-    public ValueTask<string> ZMediator_Send_Static()
-        => ZMediator.Mediator.Send(new ZBenchPing("test"), _ct);
+    public ValueTask<string> ZeroAllocMediator_Send_Static()
+        => ZeroAlloc.Mediator.Mediator.Send(new ZBenchPing("test"), _ct);
 
     [BenchmarkCategory("SendDI"), Benchmark]
-    public ValueTask<string> ZMediator_Send_DI()
+    public ValueTask<string> ZeroAllocMediator_Send_DI()
         => _zMediatorDi.Send(new ZBenchPing("test"), _ct);
 
     [BenchmarkCategory("SendDI"), Benchmark]
@@ -107,50 +107,50 @@ public class MediatorBenchmarks
 }
 
 // ============================================================
-// ZMediator Types
+// ZeroAlloc.Mediator Types
 // ============================================================
 
-public readonly record struct ZBenchPing(string Message) : ZMediator.IRequest<string>;
-public readonly record struct ZBenchCreateUser(string Name) : ZMediator.IRequest<int>;
-public readonly record struct ZBenchEvent(string Data) : ZMediator.INotification;
-public readonly record struct ZBenchMultiEvent(int Id) : ZMediator.INotification;
-public readonly record struct ZBenchStreamRequest(int Count) : ZMediator.IStreamRequest<int>;
+public readonly record struct ZBenchPing(string Message) : ZeroAlloc.Mediator.IRequest<string>;
+public readonly record struct ZBenchCreateUser(string Name) : ZeroAlloc.Mediator.IRequest<int>;
+public readonly record struct ZBenchEvent(string Data) : ZeroAlloc.Mediator.INotification;
+public readonly record struct ZBenchMultiEvent(int Id) : ZeroAlloc.Mediator.INotification;
+public readonly record struct ZBenchStreamRequest(int Count) : ZeroAlloc.Mediator.IStreamRequest<int>;
 
 // ============================================================
-// ZMediator Handlers
+// ZeroAlloc.Mediator Handlers
 // ============================================================
 
-public class ZBenchPingHandler : ZMediator.IRequestHandler<ZBenchPing, string>
+public class ZBenchPingHandler : ZeroAlloc.Mediator.IRequestHandler<ZBenchPing, string>
 {
     public ValueTask<string> Handle(ZBenchPing request, CancellationToken ct)
         => ValueTask.FromResult(request.Message);
 }
 
-public class ZBenchCreateUserHandler : ZMediator.IRequestHandler<ZBenchCreateUser, int>
+public class ZBenchCreateUserHandler : ZeroAlloc.Mediator.IRequestHandler<ZBenchCreateUser, int>
 {
     public ValueTask<int> Handle(ZBenchCreateUser request, CancellationToken ct)
         => ValueTask.FromResult(1);
 }
 
-public class ZBenchEventHandler : ZMediator.INotificationHandler<ZBenchEvent>
+public class ZBenchEventHandler : ZeroAlloc.Mediator.INotificationHandler<ZBenchEvent>
 {
     public ValueTask Handle(ZBenchEvent notification, CancellationToken ct)
         => ValueTask.CompletedTask;
 }
 
-public class ZBenchMultiEventHandlerA : ZMediator.INotificationHandler<ZBenchMultiEvent>
+public class ZBenchMultiEventHandlerA : ZeroAlloc.Mediator.INotificationHandler<ZBenchMultiEvent>
 {
     public ValueTask Handle(ZBenchMultiEvent notification, CancellationToken ct)
         => ValueTask.CompletedTask;
 }
 
-public class ZBenchMultiEventHandlerB : ZMediator.INotificationHandler<ZBenchMultiEvent>
+public class ZBenchMultiEventHandlerB : ZeroAlloc.Mediator.INotificationHandler<ZBenchMultiEvent>
 {
     public ValueTask Handle(ZBenchMultiEvent notification, CancellationToken ct)
         => ValueTask.CompletedTask;
 }
 
-public class ZBenchStreamHandler : ZMediator.IStreamRequestHandler<ZBenchStreamRequest, int>
+public class ZBenchStreamHandler : ZeroAlloc.Mediator.IStreamRequestHandler<ZBenchStreamRequest, int>
 {
     public async IAsyncEnumerable<int> Handle(
         ZBenchStreamRequest request,
@@ -162,16 +162,16 @@ public class ZBenchStreamHandler : ZMediator.IStreamRequestHandler<ZBenchStreamR
 }
 
 // ============================================================
-// ZMediator Pipeline Behavior
+// ZeroAlloc.Mediator Pipeline Behavior
 // ============================================================
 
-[ZMediator.PipelineBehavior(Order = 0, AppliesTo = typeof(ZBenchCreateUser))]
-public class ZBenchLoggingBehavior : ZMediator.IPipelineBehavior
+[ZeroAlloc.Mediator.PipelineBehavior(Order = 0, AppliesTo = typeof(ZBenchCreateUser))]
+public class ZBenchLoggingBehavior : ZeroAlloc.Mediator.IPipelineBehavior
 {
     public static ValueTask<TResponse> Handle<TRequest, TResponse>(
         TRequest request, CancellationToken ct,
         Func<TRequest, CancellationToken, ValueTask<TResponse>> next)
-        where TRequest : ZMediator.IRequest<TResponse>
+        where TRequest : ZeroAlloc.Mediator.IRequest<TResponse>
     {
         return next(request, ct);
     }
