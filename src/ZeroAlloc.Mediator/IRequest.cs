@@ -1,4 +1,4 @@
-namespace ZMediator;
+namespace ZeroAlloc;
 
 public interface IRequest<TResponse>;
 

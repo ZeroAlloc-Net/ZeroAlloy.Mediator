@@ -1,4 +1,4 @@
-namespace ZMediator;
+namespace ZeroAlloc;
 
 public interface IStreamRequestHandler<in TRequest, out TResponse>
     where TRequest : IStreamRequest<TResponse>

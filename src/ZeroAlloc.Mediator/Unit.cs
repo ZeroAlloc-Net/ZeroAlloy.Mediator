@@ -1,4 +1,4 @@
-namespace ZMediator;
+namespace ZeroAlloc;
 
 public readonly record struct Unit
 {
