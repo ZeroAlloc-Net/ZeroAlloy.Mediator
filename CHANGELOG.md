@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.1.5](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/compare/v0.1.4...v0.1.5) (2026-03-16)
+
+
+### Documentation
+
+* add compiler diagnostics reference ([ecb0215](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/ecb0215c185f9425ff894e31a1d888bc5dad6b81))
+* add CQRS web API cookbook ([12be9b6](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/12be9b6327e4a26639a6ad95b51e145f4a84f302))
+* add dependency injection guide ([a2deb6d](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/a2deb6d0418080c245b0a935cc4aec56be1e622a))
+* add documentation index ([ead6667](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/ead66670c53c4250a39df2370bc0e3c47a64b2c8))
+* add event-driven cookbook ([c7acc88](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/c7acc883f24dfdb2f14567ace5c4242943e7a63e))
+* add extensive consumer documentation with real-world examples ([62bc934](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/62bc93486b4e784cbe468b9ca0fc9f9045d782a5))
+* add getting started guide ([77903e5](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/77903e5d3d886d539944c34045831b108fe7cb3f))
+* add notifications guide ([bf58e66](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/bf58e6631391df8e69e7d8aaba34384df61d0759))
+* add performance guide ([a487aa2](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/a487aa28011d062eb9e96b9f12b22ba300779ada))
+* add pipeline behaviors guide ([9dcf802](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/9dcf802028d09464a776c496cb08ee30596c7e19))
+* add pre-push review report ([41a1204](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/41a12044a50ed43aee8238618959fdde4cb0bc26))
+* add requests and handlers guide ([52cf18d](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/52cf18d2728fe4a8639a167bf4fe0ca513321d95))
+* add streaming guide ([4a554b8](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/4a554b8c4330e0dc82beb46b4514b7717f8c191b))
+* add streaming pagination cookbook ([a497f56](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/a497f563903c2a81a835c90a4dc94d43aa2464dc))
+* add testing handlers cookbook ([720d4ac](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/720d4ac7a2a15f78e20385eca9d6e702755973bd))
+* add transactional pipeline cookbook ([d3f0c18](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/d3f0c184a7e0a3aea25162d002e833f92a3c1076))
+* add validation pipeline cookbook ([555c3fc](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/555c3fcc2616a5d7aaf64caf3f60ede206d639c2))
+
 ## [0.1.4](https://github.com/MarcelRoozekrans/ZMediator/compare/v0.1.3...v0.1.4) (2026-03-15)
 
 
