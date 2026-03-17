@@ -235,6 +235,6 @@ public static class TransactionBehavior
 
 ## Related
 
-- [Pipeline Behaviors](../05-pipeline-behaviors.md)
-- [Dependency Injection](../06-dependency-injection.md)
+- [Pipeline Behaviors](../pipeline-behaviors.md)
+- [Dependency Injection](../dependency-injection.md)
 - [Event-Driven Architecture](02-event-driven.md)

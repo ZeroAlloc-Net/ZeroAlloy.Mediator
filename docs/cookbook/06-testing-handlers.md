@@ -350,6 +350,6 @@ public class ProductsEndpointTests
 
 ## Related
 
-- [Requests & Handlers](../02-requests.md)
-- [Pipeline Behaviors](../05-pipeline-behaviors.md)
-- [Dependency Injection](../06-dependency-injection.md)
+- [Requests & Handlers](../requests.md)
+- [Pipeline Behaviors](../pipeline-behaviors.md)
+- [Dependency Injection](../dependency-injection.md)

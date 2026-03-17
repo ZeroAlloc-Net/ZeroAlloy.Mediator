@@ -1,3 +1,11 @@
+---
+id: docs-index
+title: Documentation
+slug: /docs
+description: ZeroAlloc.Mediator documentation index — navigate to all available pages.
+sidebar_position: 0
+---
+
 # ZeroAlloc.Mediator Documentation
 
 Zero-allocation, compile-time-dispatched mediator for .NET 8 and .NET 10.
@@ -6,14 +14,16 @@ Zero-allocation, compile-time-dispatched mediator for .NET 8 and .NET 10.
 
 | # | Guide | Description |
 |---|-------|-------------|
-| 1 | [Getting Started](01-getting-started.md) | Install and send your first request in 5 minutes |
-| 2 | [Requests & Handlers](02-requests.md) | Commands, queries, `Unit` responses, dispatch |
-| 3 | [Notifications](03-notifications.md) | Events: sequential, parallel, polymorphic handlers |
-| 4 | [Streaming](04-streaming.md) | `IAsyncEnumerable<T>` for large result sets |
-| 5 | [Pipeline Behaviors](05-pipeline-behaviors.md) | Middleware: logging, validation, caching, transactions |
-| 6 | [Dependency Injection](06-dependency-injection.md) | DI containers, `IMediator`, factory delegates |
-| 7 | [Diagnostics](07-diagnostics.md) | ZAM001–ZAM007 compiler error reference with fixes |
-| 8 | [Performance](08-performance.md) | Zero-alloc internals, benchmark results, Native AOT |
+| 1 | [Getting Started](getting-started.md) | Install and send your first request in 5 minutes |
+| 2 | [Requests & Handlers](requests.md) | Commands, queries, `Unit` responses, dispatch |
+| 3 | [Notifications](notifications.md) | Events: sequential, parallel, polymorphic handlers |
+| 4 | [Streaming](streaming.md) | `IAsyncEnumerable<T>` for large result sets |
+| 5 | [Pipeline Behaviors](pipeline-behaviors.md) | Middleware: logging, validation, caching, transactions |
+| 6 | [Dependency Injection](dependency-injection.md) | DI containers, `IMediator`, factory delegates |
+| 7 | [Diagnostics](diagnostics.md) | ZAM001–ZAM007 compiler error reference with fixes |
+| 8 | [Performance](performance.md) | Zero-alloc internals, benchmark results, Native AOT |
+| 9 | [Advanced Patterns](advanced.md) | Error handling, cancellation, scoped behaviors |
+| 10 | [Testing](testing.md) | Unit-test handlers, behaviors, and notifications |
 
 ## Cookbook
 

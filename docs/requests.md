@@ -1,3 +1,11 @@
+---
+id: requests
+title: Requests & Handlers
+slug: /docs/requests
+description: Commands, queries, and Unit responses — the request/response core of ZeroAlloc.Mediator.
+sidebar_position: 2
+---
+
 # Requests & Handlers
 
 Requests are the primary unit of work in the mediator pattern. Commands mutate state (create, update, delete); queries read state. Both use `IRequest<TResponse>`. The handler is the single place responsible for executing the operation.
@@ -149,7 +157,7 @@ public readonly record struct GetProductQuery(Guid ProductId) : IRequest<Product
 
 **Pitfall 2 — Handler with constructor dependencies but no DI configured**
 
-If your handler has constructor parameters, you must either configure factories via `Mediator.Configure()` or use the `IMediator`/`MediatorService` DI integration. See [Dependency Injection](06-dependency-injection.md).
+If your handler has constructor parameters, you must either configure factories via `Mediator.Configure()` or use the `IMediator`/`MediatorService` DI integration. See [Dependency Injection](dependency-injection.md).
 
 **Pitfall 3 — Forgetting `return Unit.Value`**
 

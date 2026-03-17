@@ -1,3 +1,11 @@
+---
+id: dependency-injection
+title: Dependency Injection
+slug: /docs/dependency-injection
+description: Three handler instantiation modes — factory delegates, IMediator, and static Mediator.
+sidebar_position: 6
+---
+
 # Dependency Injection
 
 By default, ZeroAlloc.Mediator instantiates handlers via their parameterless constructor. For handlers that depend on services — repositories, loggers, HTTP clients — you have three options: factory delegates via `Mediator.Configure()`, full DI container integration via `IMediator`/`MediatorService`, or the static `Mediator` class on hot paths where the `IMediator` interface overhead isn't wanted.
@@ -193,4 +201,4 @@ builder.Services.AddTransient<CreateProductHandler>();
 
 **Pitfall 4 — Testing with mocked `IMediator`**
 
-If you're testing code that takes `IMediator`, you can mock it with any mocking library. But for testing the actual handler logic, test the handler directly — don't go through `Mediator.Send`. See [Testing Handlers](cookbook/06-testing-handlers.md).
+If you're testing code that takes `IMediator`, you can mock it with any mocking library. But for testing the actual handler logic, test the handler directly — don't go through `Mediator.Send`. See [Testing](testing.md).

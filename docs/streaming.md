@@ -1,3 +1,11 @@
+---
+id: streaming
+title: Streaming
+slug: /docs/streaming
+description: Return IAsyncEnumerable<T> from a handler for large or live result sets.
+sidebar_position: 4
+---
+
 # Streaming
 
 Streaming lets a handler yield results one at a time as `IAsyncEnumerable<T>`. Instead of loading an entire result set into memory and returning it all at once, the consumer processes items as they arrive. This is ideal for large exports, paginated feeds, real-time data, or any result set that may exceed available memory.

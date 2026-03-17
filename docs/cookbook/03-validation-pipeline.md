@@ -258,6 +258,6 @@ catch (FluentValidation.ValidationException ex)
 
 ## Related
 
-- [Pipeline Behaviors](../05-pipeline-behaviors.md)
-- [Requests & Handlers](../02-requests.md)
+- [Pipeline Behaviors](../pipeline-behaviors.md)
+- [Requests & Handlers](../requests.md)
 - [CQRS Web API](01-cqrs-web-api.md)

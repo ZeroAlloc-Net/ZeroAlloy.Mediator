@@ -1,5 +1,9 @@
 ---
+id: getting-started
+title: Getting Started
 slug: /
+description: Install ZeroAlloc.Mediator and send your first request in under five minutes.
+sidebar_position: 1
 ---
 
 # Getting Started
@@ -113,10 +117,12 @@ sequenceDiagram
 
 | Guide | What you'll learn |
 |-------|-------------------|
-| [Requests & Handlers](02-requests.md) | Commands, queries, Unit responses |
-| [Notifications](03-notifications.md) | Events: sequential, parallel, polymorphic |
-| [Streaming](04-streaming.md) | `IAsyncEnumerable` for large result sets |
-| [Pipeline Behaviors](05-pipeline-behaviors.md) | Logging, validation, caching middleware |
-| [Dependency Injection](06-dependency-injection.md) | DI containers, `IMediator`, factories |
-| [Diagnostics](07-diagnostics.md) | ZAM001–ZAM007 compiler error reference |
-| [Performance](08-performance.md) | Zero-alloc internals, benchmarks, AOT |
+| [Requests & Handlers](requests.md) | Commands, queries, Unit responses |
+| [Notifications](notifications.md) | Events: sequential, parallel, polymorphic |
+| [Streaming](streaming.md) | `IAsyncEnumerable` for large result sets |
+| [Pipeline Behaviors](pipeline-behaviors.md) | Logging, validation, caching middleware |
+| [Dependency Injection](dependency-injection.md) | DI containers, `IMediator`, factories |
+| [Diagnostics](diagnostics.md) | ZAM001–ZAM007 compiler error reference |
+| [Performance](performance.md) | Zero-alloc internals, benchmarks, AOT |
+| [Advanced Patterns](advanced.md) | Error handling, cancellation, scoped behaviors |
+| [Testing](testing.md) | Unit-test handlers, behaviors, and notifications |
