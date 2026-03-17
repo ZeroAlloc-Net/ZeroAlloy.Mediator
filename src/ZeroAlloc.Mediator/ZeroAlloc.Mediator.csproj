@@ -5,4 +5,7 @@
     <PackageId>ZeroAlloc.Mediator</PackageId>
     <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Projects\Prive\ZeroAlloc.Pipeline\src\ZeroAlloc.Pipeline\ZeroAlloc.Pipeline.csproj" />
+  </ItemGroup>
 </Project>
