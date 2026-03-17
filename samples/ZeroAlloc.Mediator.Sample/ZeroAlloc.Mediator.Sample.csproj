@@ -18,8 +18,6 @@
                       Condition="Exists('..\..\..\ZeroAlloc.Pipeline\src\ZeroAlloc.Pipeline\ZeroAlloc.Pipeline.csproj')" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
-    <PackageReference Include="Meziantou.Analyzer" Version="2.*" PrivateAssets="all" />
-    <PackageReference Include="ErrorProne.NET.Structs" Version="0.*" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
   </ItemGroup>
 </Project>
