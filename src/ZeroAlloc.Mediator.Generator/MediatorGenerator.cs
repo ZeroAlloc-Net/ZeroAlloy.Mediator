@@ -411,44 +411,20 @@ namespace ZeroAlloc.Mediator.Generator
             }
             else
             {
-                // Build nested pipeline calls
-                var innermost = string.Format(
-                    "{{ var handler = {0}?.Invoke() ?? new {1}(); return handler.Handle(r{2}, c{2}); }}",
-                    GetFactoryFieldName(handler.HandlerTypeName),
-                    handler.HandlerTypeName,
-                    applicablePipelines.Count);
-
-                var result = string.Format("static (r{0}, c{0}) =>\n                    {1}",
-                    applicablePipelines.Count, innermost);
-
-                for (int i = applicablePipelines.Count - 1; i >= 0; i--)
+                var shape = new PipelineShape
                 {
-                    var pipeline = applicablePipelines[i];
+                    TypeArguments = new[] { handler.RequestTypeName, handler.ResponseTypeName },
+                    OuterParameterNames = new[] { "request", "ct" },
+                    LambdaParameterPrefixes = new[] { "r", "c" },
+                    InnermostBodyTemplate = string.Format(
+                        "{{ var handler = {0}?.Invoke() ?? new {1}(); return handler.Handle(r{2}, c{2}); }}",
+                        GetFactoryFieldName(handler.HandlerTypeName),
+                        handler.HandlerTypeName,
+                        applicablePipelines.Count),
+                };
 
-                    if (i == 0)
-                    {
-                        // Outermost: uses request/ct directly
-                        result = string.Format(
-                            "{0}.Handle<{1}, {2}>(\n                request, ct, {3})",
-                            pipeline.BehaviorTypeName,
-                            handler.RequestTypeName,
-                            handler.ResponseTypeName,
-                            result);
-                    }
-                    else
-                    {
-                        // Intermediate: wrap in lambda so previous behavior gets a delegate
-                        result = string.Format(
-                            "static (r{0}, c{0}) =>\n                {1}.Handle<{2}, {3}>(\n                    r{0}, c{0}, {4})",
-                            i,
-                            pipeline.BehaviorTypeName,
-                            handler.RequestTypeName,
-                            handler.ResponseTypeName,
-                            result);
-                    }
-                }
-
-                sb.AppendLine(string.Format("            return {0};", result));
+                var chain = PipelineEmitter.EmitChain(applicablePipelines, shape);
+                sb.AppendLine(string.Format("            return {0};", chain));
             }
 
             sb.AppendLine("        }");
