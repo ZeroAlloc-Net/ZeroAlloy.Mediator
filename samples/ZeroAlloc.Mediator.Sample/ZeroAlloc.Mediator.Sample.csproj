@@ -3,14 +3,17 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>ZeroAlloc.Mediator.Sample</RootNamespace>
+    <!-- MA0048: multiple types share Program.cs by design (compact sample). -->
+    <!-- EPS05: fires on auto-generated Mediator.g.cs, not directly fixable here. -->
+    <NoWarn>$(NoWarn);MA0048;EPS05</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\ZeroAlloc.Mediator\ZeroAlloc.Mediator.csproj" />
     <ProjectReference Include="..\..\src\ZeroAlloc.Mediator.Generator\ZeroAlloc.Mediator.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <PackageReference Include="ZeroAlloc.Pipeline.Generators" Version="$(ZeroAllocPipelineVersion)" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <PackageReference Include="ZeroAlloc.Pipeline" Version="$(ZeroAllocPipelineVersion)" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
-    <PackageReference Include="Meziantou.Analyzer" Version="2.*" PrivateAssets="all" />
-    <PackageReference Include="ErrorProne.NET.Structs" Version="0.*" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
   </ItemGroup>
 </Project>

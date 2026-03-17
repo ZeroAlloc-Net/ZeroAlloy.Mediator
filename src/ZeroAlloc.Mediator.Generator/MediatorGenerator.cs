@@ -7,6 +7,7 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using ZeroAlloc.Pipeline.Generators;
 
 namespace ZeroAlloc.Mediator.Generator
 {
@@ -36,11 +37,33 @@ namespace ZeroAlloc.Mediator.Generator
                 .Where(static x => x != null)
                 .Collect();
 
-            var pipelineBehaviors = context.SyntaxProvider.CreateSyntaxProvider(
-                predicate: static (node, _) => node is ClassDeclarationSyntax cds && cds.AttributeLists.Count > 0,
-                transform: static (ctx, ct) => GetPipelineBehaviorInfo(ctx, ct))
+            // Use ForAttributeWithMetadataName so Roslyn can cache at the per-class level and
+            // avoid re-running discovery on every compilation change (unlike CompilationProvider).
+            // Two registrations are needed: one for direct use of the base attribute and one for
+            // the ZeroAlloc.Mediator subclass attribute — ForAttributeWithMetadataName matches
+            // exact FQNs only (no subclass walk).
+            var pipelineBehaviorsBase = context.SyntaxProvider
+                .ForAttributeWithMetadataName(
+                    "ZeroAlloc.Pipeline.PipelineBehaviorAttribute",
+                    predicate: static (node, _) => node is ClassDeclarationSyntax,
+                    transform: static (ctx, _) => PipelineBehaviorDiscoverer.FromAttributeSyntaxContext(ctx))
                 .Where(static x => x != null)
-                .Collect();
+                .Select(static (x, _) => x!);
+
+            var pipelineBehaviorsMediator = context.SyntaxProvider
+                .ForAttributeWithMetadataName(
+                    "ZeroAlloc.Mediator.PipelineBehaviorAttribute",
+                    predicate: static (node, _) => node is ClassDeclarationSyntax,
+                    transform: static (ctx, _) => PipelineBehaviorDiscoverer.FromAttributeSyntaxContext(ctx))
+                .Where(static x => x != null)
+                .Select(static (x, _) => x!);
+
+            var pipelineBehaviors = pipelineBehaviorsBase.Collect()
+                .Combine(pipelineBehaviorsMediator.Collect())
+                .Select(static (pair, _) =>
+                    pair.Left.AddRange(pair.Right)
+                        .OrderBy(static b => b.Order)
+                        .ToImmutableArray());
 
             var requestTypes = context.SyntaxProvider.CreateSyntaxProvider(
                 predicate: static (node, _) => node is TypeDeclarationSyntax tds && tds.BaseList != null,
@@ -198,70 +221,6 @@ namespace ZeroAlloc.Mediator.Generator
             return null;
         }
 
-        private static PipelineBehaviorInfo? GetPipelineBehaviorInfo(
-            GeneratorSyntaxContext context, System.Threading.CancellationToken ct)
-        {
-            var classDecl = (ClassDeclarationSyntax)context.Node;
-            var symbol = context.SemanticModel.GetDeclaredSymbol(classDecl, ct);
-            if (symbol == null) return null;
-
-            // Check for [PipelineBehavior] attribute
-            var pipelineAttr = symbol.GetAttributes().FirstOrDefault(a =>
-                a.AttributeClass?.ToDisplayString() == "ZeroAlloc.Mediator.PipelineBehaviorAttribute");
-
-            if (pipelineAttr == null) return null;
-
-            // Check implements IPipelineBehavior
-            var implementsInterface = symbol.AllInterfaces.Any(i =>
-                i.ToDisplayString() == "ZeroAlloc.Mediator.IPipelineBehavior");
-
-            if (!implementsInterface) return null;
-
-            var behaviorType = symbol.ToDisplayString(FullyQualifiedFormat);
-
-            int order = 0;
-            // First check constructor args
-            if (pipelineAttr.ConstructorArguments.Length > 0
-                && pipelineAttr.ConstructorArguments[0].Value is int constructorOrder)
-            {
-                order = constructorOrder;
-            }
-            // Then check named args (Order = x)
-            foreach (var named in pipelineAttr.NamedArguments)
-            {
-                if (named.Key == "Order" && named.Value.Value is int namedOrder)
-                {
-                    order = namedOrder;
-                }
-            }
-
-            string? appliesTo = null;
-            foreach (var named in pipelineAttr.NamedArguments)
-            {
-                if (named.Key == "AppliesTo" && named.Value.Value is INamedTypeSymbol typeSymbol)
-                {
-                    appliesTo = typeSymbol.ToDisplayString(FullyQualifiedFormat);
-                }
-            }
-
-            // Check for a public static Handle method with 2 type parameters
-            var hasValidHandleMethod = false;
-            foreach (var member in symbol.GetMembers())
-            {
-                if (member is IMethodSymbol method
-                    && method.Name == "Handle"
-                    && method.IsStatic
-                    && method.DeclaredAccessibility == Accessibility.Public
-                    && method.TypeParameters.Length == 2)
-                {
-                    hasValidHandleMethod = true;
-                    break;
-                }
-            }
-
-            return new PipelineBehaviorInfo(behaviorType, order, appliesTo, hasValidHandleMethod);
-        }
-
         private static RequestTypeInfo? GetRequestTypeInfo(
             GeneratorSyntaxContext context, System.Threading.CancellationToken ct)
         {
@@ -292,7 +251,7 @@ namespace ZeroAlloc.Mediator.Generator
         private static void ReportDiagnostics(
             Microsoft.CodeAnalysis.SourceProductionContext spc,
             ImmutableArray<RequestHandlerInfo?> requestHandlers,
-            ImmutableArray<PipelineBehaviorInfo?> pipelineBehaviors,
+            ImmutableArray<PipelineBehaviorInfo> pipelineBehaviors,
             ImmutableArray<RequestTypeInfo?> requestTypes)
         {
             var validHandlers = requestHandlers.Where(x => x != null).Select(x => x!).ToList();
@@ -339,32 +298,25 @@ namespace ZeroAlloc.Mediator.Generator
                 }
             }
 
-            // ZAM005: Missing behavior Handle method
-            var validBehaviors = pipelineBehaviors.Where(x => x != null).Select(x => x!).ToList();
-            foreach (var behavior in validBehaviors)
+            // ZAM005: Missing behavior Handle method (2 type params expected for Send pipeline)
+            var validBehaviors = pipelineBehaviors.ToList();
+            foreach (var behavior in PipelineDiagnosticRules.FindMissingHandleMethod(validBehaviors, expectedTypeParamCount: 2))
             {
-                if (!behavior.HasValidHandleMethod)
-                {
-                    spc.ReportDiagnostic(Diagnostic.Create(
-                        DiagnosticDescriptors.MissingBehaviorHandleMethod,
-                        Location.None,
-                        behavior.BehaviorTypeName));
-                }
+                spc.ReportDiagnostic(Diagnostic.Create(
+                    DiagnosticDescriptors.MissingBehaviorHandleMethod,
+                    Location.None,
+                    behavior.BehaviorTypeName));
             }
 
             // ZAM006: Duplicate behavior order
-            var orderGroups = validBehaviors.GroupBy(b => b.Order).ToList();
-            foreach (var group in orderGroups)
+            foreach (var group in PipelineDiagnosticRules.FindDuplicateOrders(validBehaviors))
             {
-                if (group.Count() > 1)
-                {
-                    var behaviorNames = string.Join(", ", group.Select(b => b.BehaviorTypeName));
-                    spc.ReportDiagnostic(Diagnostic.Create(
-                        DiagnosticDescriptors.DuplicateBehaviorOrder,
-                        Location.None,
-                        behaviorNames,
-                        group.Key));
-                }
+                var behaviorNames = string.Join(", ", group.Select(b => b.BehaviorTypeName));
+                spc.ReportDiagnostic(Diagnostic.Create(
+                    DiagnosticDescriptors.DuplicateBehaviorOrder,
+                    Location.None,
+                    behaviorNames,
+                    group.Key));
             }
         }
 
@@ -372,7 +324,7 @@ namespace ZeroAlloc.Mediator.Generator
             ImmutableArray<RequestHandlerInfo?> requestHandlers,
             ImmutableArray<NotificationHandlerInfo?> notificationHandlers,
             ImmutableArray<StreamHandlerInfo?> streamHandlers,
-            ImmutableArray<PipelineBehaviorInfo?> pipelineBehaviors)
+            ImmutableArray<PipelineBehaviorInfo> pipelineBehaviors)
         {
             var sb = new StringBuilder();
             sb.AppendLine("// <auto-generated />");
@@ -389,8 +341,7 @@ namespace ZeroAlloc.Mediator.Generator
             var validRequests = requestHandlers.Where(x => x != null).Select(x => x!).ToList();
             var validNotifications = notificationHandlers.Where(x => x != null).Select(x => x!).ToList();
             var validStreams = streamHandlers.Where(x => x != null).Select(x => x!).ToList();
-            var validPipelines = pipelineBehaviors.Where(x => x != null).Select(x => x!)
-                .OrderBy(x => x.Order).ToList();
+            var validPipelines = pipelineBehaviors.ToList();
 
             // Emit factory fields for request handlers
             foreach (var handler in validRequests)
@@ -459,7 +410,8 @@ namespace ZeroAlloc.Mediator.Generator
             List<PipelineBehaviorInfo> pipelines)
         {
             var applicablePipelines = pipelines
-                .Where(p => p.AppliesTo == null || p.AppliesTo == handler.RequestTypeName)
+                .Where(p => (p.AppliesTo == null || p.AppliesTo == handler.RequestTypeName)
+                         && p.HasValidHandleMethod(expectedTypeParamCount: 2))
                 .ToList();
 
             sb.AppendLine(string.Format(
@@ -477,44 +429,22 @@ namespace ZeroAlloc.Mediator.Generator
             }
             else
             {
-                // Build nested pipeline calls
-                var innermost = string.Format(
-                    "{{ var handler = {0}?.Invoke() ?? new {1}(); return handler.Handle(r{2}, c{2}); }}",
-                    GetFactoryFieldName(handler.HandlerTypeName),
-                    handler.HandlerTypeName,
-                    applicablePipelines.Count);
-
-                var result = string.Format("static (r{0}, c{0}) =>\n                    {1}",
-                    applicablePipelines.Count, innermost);
-
-                for (int i = applicablePipelines.Count - 1; i >= 0; i--)
+                var handlerTypeName = handler.HandlerTypeName;
+                var factoryFieldName = GetFactoryFieldName(handler.HandlerTypeName);
+                var shape = new PipelineShape
                 {
-                    var pipeline = applicablePipelines[i];
+                    TypeArguments = new[] { handler.RequestTypeName, handler.ResponseTypeName },
+                    OuterParameterNames = new[] { "request", "ct" },
+                    LambdaParameterPrefixes = new[] { "r", "c" },
+                    InnermostBodyFactory = depth => string.Format(
+                        "{{ var handler = {0}?.Invoke() ?? new {1}(); return handler.Handle(r{2}, c{2}); }}",
+                        factoryFieldName,
+                        handlerTypeName,
+                        depth),
+                };
 
-                    if (i == 0)
-                    {
-                        // Outermost: uses request/ct directly
-                        result = string.Format(
-                            "{0}.Handle<{1}, {2}>(\n                request, ct, {3})",
-                            pipeline.BehaviorTypeName,
-                            handler.RequestTypeName,
-                            handler.ResponseTypeName,
-                            result);
-                    }
-                    else
-                    {
-                        // Intermediate: wrap in lambda so previous behavior gets a delegate
-                        result = string.Format(
-                            "static (r{0}, c{0}) =>\n                {1}.Handle<{2}, {3}>(\n                    r{0}, c{0}, {4})",
-                            i,
-                            pipeline.BehaviorTypeName,
-                            handler.RequestTypeName,
-                            handler.ResponseTypeName,
-                            result);
-                    }
-                }
-
-                sb.AppendLine(string.Format("            return {0};", result));
+                var chain = PipelineEmitter.EmitChain(applicablePipelines, shape);
+                sb.AppendLine(string.Format("            return {0};", chain));
             }
 
             sb.AppendLine("        }");
