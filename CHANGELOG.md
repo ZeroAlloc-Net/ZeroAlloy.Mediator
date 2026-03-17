@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.2](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/compare/v1.1.1...v1.1.2) (2026-03-17)
+
+
+### Documentation
+
+* improve README ([fc77a20](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/fc77a20c3e3a7b6ae0a974a64d1a09364cf8e271))
+* improve README benchmark table and fix NuGet version ([ce373f5](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/commit/ce373f5201b442fa05ae5048d367fbc4a711b42b))
+
 ## [1.1.1](https://github.com/ZeroAlloc-Net/ZeroAlloc.Mediator/compare/v1.1.0...v1.1.1) (2026-03-16)
 
 
