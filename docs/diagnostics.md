@@ -1,3 +1,11 @@
+---
+id: diagnostics
+title: Compiler Diagnostics
+slug: /docs/diagnostics
+description: ZAM001–ZAM007 Roslyn analyzer rules with triggers, severities, and fix guidance.
+sidebar_position: 7
+---
+
 # Compiler Diagnostics
 
 ZeroAlloc.Mediator validates your mediator setup at compile time using a Roslyn analyzer. Misconfigurations appear as build errors or warnings in your IDE and on `dotnet build` — you never discover them at runtime in production.

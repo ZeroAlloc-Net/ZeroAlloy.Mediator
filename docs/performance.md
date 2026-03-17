@@ -1,3 +1,11 @@
+---
+id: performance
+title: Performance
+slug: /docs/performance
+description: Zero-allocation design decisions and benchmark results against MediatR.
+sidebar_position: 8
+---
+
 # Performance
 
 ZeroAlloc.Mediator is built for hot paths where mediator overhead would otherwise be measurable. This page explains the four design decisions that eliminate allocation, the benchmark results that validate them, and guidance for when zero-allocation actually matters in practice.

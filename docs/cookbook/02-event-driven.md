@@ -198,6 +198,6 @@ Neither approach is built into `ZeroAlloc.Mediator` by design — the library st
 
 ## Related
 
-- [Notifications](../03-notifications.md)
+- [Notifications](../notifications.md)
 - [Transactional Pipeline](04-transactional-pipeline.md)
-- [Testing Handlers](06-testing-handlers.md)
+- [Testing](../testing.md)

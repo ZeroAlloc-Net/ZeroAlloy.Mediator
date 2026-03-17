@@ -1,3 +1,11 @@
+---
+id: notifications
+title: Notifications
+slug: /docs/notifications
+description: Publish domain events to multiple handlers with sequential, parallel, or polymorphic dispatch.
+sidebar_position: 3
+---
+
 # Notifications
 
 Notifications (domain events) broadcast a fact that something happened. Unlike requests, they have no return value and can have zero or many handlers. ZeroAlloc.Mediator supports three dispatch modes: sequential, parallel, and polymorphic.

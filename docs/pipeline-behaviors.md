@@ -1,3 +1,11 @@
+---
+id: pipeline-behaviors
+title: Pipeline Behaviors
+slug: /docs/pipeline-behaviors
+description: Compile-time middleware for logging, validation, caching, and other cross-cutting concerns.
+sidebar_position: 5
+---
+
 # Pipeline Behaviors
 
 Pipeline behaviors are middleware that wrap every request dispatch. They are the right place for cross-cutting concerns: logging, validation, performance monitoring, caching, and transactions. Unlike MediatR's `IPipelineBehavior<TRequest, TResponse>`, ZeroAlloc.Mediator inlines behaviors at compile time as nested static lambdas — no interface allocation, no virtual dispatch, zero overhead.
@@ -202,4 +210,4 @@ public static class CachingBehavior { ... }
 
 **Pitfall 4 — Accessing DI services from a static behavior**
 
-Static behaviors have no instance state. To access services (e.g., `ILogger`, `DbContext`), use an ambient scope pattern. See [Dependency Injection](06-dependency-injection.md) and the [Transactional Pipeline cookbook](cookbook/04-transactional-pipeline.md).
+Static behaviors have no instance state. To access services (e.g., `ILogger`, `DbContext`), use an ambient scope pattern. See [Dependency Injection](dependency-injection.md) and the [Transactional Pipeline cookbook](cookbook/04-transactional-pipeline.md).

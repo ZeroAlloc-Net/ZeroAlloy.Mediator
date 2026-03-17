@@ -209,6 +209,6 @@ The buffered approach must hold every row in memory simultaneously before writin
 
 ## Related
 
-- [Streaming](../04-streaming.md)
+- [Streaming](../streaming.md)
 - [CQRS Web API](01-cqrs-web-api.md)
-- [Testing Handlers](06-testing-handlers.md)
+- [Testing](../testing.md)
